@@ -25,7 +25,8 @@ class TicTacToe:
             self.turn = self.player1
 
     def move(self, act, player):
-        if act < 9 and act >= 0: # Can I write this nicer?
+        # TODO: What is better: Using self.turn? Or player as a variable passed into this func?
+        if act < 9 and act >= 0: # TODO: Can I write this nicer?
             if self.board[act] == 0: # TODO: Move into a method 'legal_move()'?
                 self.board[act] = player
                 return True
@@ -65,7 +66,7 @@ class TicTacToe:
         # Run the game
         while True:      
             while True:
-                # TODO: Handle all kinds of exceptions from the input
+                # TODO: Handle all kinds of bad input
                 act = int(input('Player {} make your move.'.format(self.turn)))  
                 if self.move(act, self.turn):
                     break
