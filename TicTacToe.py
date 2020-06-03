@@ -63,18 +63,16 @@ class TicTacToe:
 
     def run(self):
         # Run the game
-        while True:
-            
-            j = False # TODO: Is this a nice way to do it? Probably not.
-            while j == False:
+        while True:      
+            while True:
                 # TODO: Handle all kinds of exceptions from the input
-                act = int(input('Player {} make your move.'.format(self.turn)))
-                
-                player = self.turn
-                j = self.move(act, player)
+                act = int(input('Player {} make your move.'.format(self.turn)))  
+                if self.move(act, self.turn):
+                    break
             
             if self.is_winner():
-                print('And the winner is: Player {}'.format(player))
+                print('And the winner is: Player {}'.format(self.turn))
+                self.render_board()
                 break
             
             self.render_board()
