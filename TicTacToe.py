@@ -10,7 +10,6 @@ class TicTacToe:
     def reset(self):
         # Reset the game to the original position
         self.board = [0 for i in range(9)]
-        self.render_board()
 
     def render_board(self):
         for i in range(0, len(self.board), 3):
@@ -46,9 +45,10 @@ class TicTacToe:
         for i in range(3):     
             if all([j == self.turn for j in [self.board[i], self.board[i+3], self.board[i+6]]]):
                 return True
+        for i in range(0, 7, 3):
             if all([j == self.turn for j in [self.board[i], self.board[i+1], self.board[i+2]]]):
                 return True
-              
+        
         # Check the two diagonals
         if all([j == self.turn for j in [self.board[0], self.board[4], self.board[8]]]):
             return True
@@ -64,10 +64,11 @@ class TicTacToe:
 
     def run(self):
         # Run the game
+        self.render_board()
         while True:      
             while True:
                 # TODO: Handle all kinds of bad input
-                act = int(input('Player {} make your move.'.format(self.turn)))  
+                act = int(input('Player {} make your move: '.format(self.turn)))  
                 if self.move(act, self.turn):
                     break
             
