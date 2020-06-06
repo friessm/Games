@@ -9,6 +9,19 @@ class TicTacToeTest(unittest.TestCase):
         # Intantiate the TicTacToe class
         self.game = TicTacToe.TicTacToe()
 
+    def test_next_turn(self):
+
+        print('testing next_turn method ... \n')
+
+        # Test if player 1 switches to player 2
+        self.game.next_turn()
+        self.assertEqual(2, self.game.turn)
+
+        # Test if player 2 switches to player 1
+        self.game.next_turn()
+        self.assertEqual(1, self.game.turn)
+
+
     def test_move(self):      
         
         # TODO: How to supress the text to stdout?
