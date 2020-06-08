@@ -11,7 +11,7 @@ class TicTacToeTest(unittest.TestCase):
 
     def test_next_turn(self):
 
-        print('testing next_turn method ... \n')
+        print('Testing next_turn method ... \n')
 
         # Test if player 1 switches to player 2
         self.game.next_turn()
@@ -25,7 +25,7 @@ class TicTacToeTest(unittest.TestCase):
     def test_move(self):      
         
         # TODO: How to supress the text to stdout?
-        print('testing move method ... \n')
+        print('Testing move method ... \n')
         
         # Test the happy cases
         for i in range(0,9):
@@ -42,7 +42,7 @@ class TicTacToeTest(unittest.TestCase):
 
     def test_is_winner(self):
         
-        print('testing is_winner method ... \n')
+        print('Testing is_winner method ... \n')
         
         # Positive cases
         # Test rows and columns for player 1
@@ -51,11 +51,14 @@ class TicTacToeTest(unittest.TestCase):
                   [0, 0, 1, 0, 0, 1, 0, 0, 1],
                   [1, 1, 1, 0, 0, 0, 0, 0, 0],
                   [0, 0, 0, 1, 1, 1, 0, 0, 0],
-                  [0, 0, 0, 0, 0, 0, 1, 1, 1]]
+                  [1, 1, 1, 2, 2, 1, 2, 0, 0],
+                  [0, 0, 0, 0, 0, 0, 1, 1, 1],
+                  [2, 2, 0, 1, 1, 1, 0, 0, 0]]
 
         for i in range(len(tlist1)):
             self.game.board = tlist1[i]
-            self.assertTrue(self.game.is_winner())
+            print(self.game.board)
+            self.assertIs(self.game.is_winner(), 1)
 
         # Test diagonals for player 2
         self.game.next_turn()
@@ -64,7 +67,8 @@ class TicTacToeTest(unittest.TestCase):
 
         for i in range(len(tlist2)):
             self.game.board = tlist2[i]
-            self.assertTrue(self.game.is_winner())
+            print(self.game.is_winner())
+            self.assertIs(self.game.is_winner(), 2)
 
         # Negative cases for player 1
         self.game.next_turn()
@@ -73,11 +77,21 @@ class TicTacToeTest(unittest.TestCase):
                   [0, 0, 2, 0, 0, 1, 0, 0, 1],
                   [1, 1, 2, 0, 0, 0, 0, 0, 0],
                   [0, 0, 0, 1, 2, 1, 0, 0, 0],
+                  [1, 1, 0, 2, 2, 1, 2, 0, 0],
                   [0, 0, 0, 0, 0, 0, 1, 1, 2]]
 
         for i in range(len(tlist3)):
             self.game.board = tlist3[i]
-            self.assertFalse(self.game.is_winner())
+            self.assertIs(self.game.is_winner(), None)
+
+        # Tie and player 2's turn
+        self.game.next_turn()
+        tlist4 = [[2, 1, 2, 1, 2, 2, 1, 2, 1],
+                  [1, 1, 2, 2, 1, 1, 1, 2, 2]]
+
+        for i in range(len(tlist4)):
+            self.game.board = tlist4[i]
+            self.assertIs(self.game.is_winner(), 0)
 
 
 if __name__ == '__main__':
