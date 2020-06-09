@@ -1,5 +1,6 @@
 
 from math import inf
+from itertools import groupby
 
 class TicTacToe:
     
@@ -7,13 +8,12 @@ class TicTacToe:
         self.reset()
         self.human = 1
         self.ai = 2
-        self.turn = self.ai
+        self.turn = self.human
         self.scores = {'1': -10, '2': 10, '0': 0}
 
     def reset(self):
         # Reset the game to the original position
-        # self.board = [0 for i in range(9)]
-        self.board = [2, 1, 2, 1, 1, 0, 1, 2, 0]
+        self.board = [0 for i in range(9)]
 
     def render_board(self):
         for i in range(0, len(self.board), 3):
@@ -37,48 +37,50 @@ class TicTacToe:
 
     def is_winner(self):
         """ Check columns, rows, the two diagonals and tie, or return None. """
-        for i in range(3):     
-            if all(x==self.turn for x in [self.board[i], self.board[i+3], self.board[i+6]]):
-                return self.turn
-            if all(x==self.turn for x in self.board[i*3:i*3+3]):
-                return self.turn
-        if all(x==self.turn for x in [self.board[0], self.board[4], self.board[8]]):
-            return self.turn
-        if all(x==self.turn for x in [self.board[2], self.board[4], self.board[6]]):
-            return self.turn
-        if 0 not in self.board:
-            return 0
-        else:
-            return None
+        b = self.board
+        for turn in [1, 2]:
+            for i in range(3):     
+                if all(x==turn for x in [b[i],b[i+3], b[i+6]]):
+                    return turn
+                if all(x==turn for x in b[i*3:i*3+3]):
+                    return turn
+            if all(x==turn for x in [b[0], b[4], b[8]]):
+                return turn
+            if all(x==turn for x in [b[2], b[4], b[6]]):
+                return turn
+            if 0 not in b:
+                return 0
+            else:
+                return None
 
-    def minimax(self, maximizing_player):
+    def minimax(self, player):
         res = self.is_winner()
         if res != None:
             return self.scores[str(res)]
-        self.next_turn()
-        if maximizing_player:
+        if self.turn == self.ai:
             value = -inf
             for i in range(0, 9):
                 if self.move(i, self.turn):
-                    value = max(value, self.minimax(False))
+                    value = max(value, self.minimax(self.next_turn()))
                     self.board[i] = 0
             return value
         else:
             value = inf
             for i in range(0, 9):
                 if self.move(i, self.turn):
-                    value = min(value, self.minimax(True))
+                    value = min(value, self.minimax(self.next_turn()))
                     self.board[i] = 0
             return value
 
-    def best_ai_move(self):
+    def best_ai_act(self):
         vacts = []
         for i in range(0, 9):
-            if self.move(i, self.ai):
-                vacts.append((self.minimax(False), i))
+            if self.move(i, self.turn):
+                vacts.append((self.minimax(self.next_turn()), i))
                 self.board[i] = 0
-                self.next_turn()
         best_act = max(vacts, key=lambda item:item[0])
+        print(vacts)
+        print(best_act)
         if self.turn == self.human:
             self.next_turn()
         return best_act[1]
@@ -87,7 +89,6 @@ class TicTacToe:
         # Run the game
         self.render_board()
         while True:      
-            print('Next turn: {}'.format(self.turn))
             if self.turn == self.human:
                 while True:
                     # TODO: Handle all kinds of bad input
@@ -96,7 +97,9 @@ class TicTacToe:
                         break                                 
             # AI's turn (maximizing player)
             else:
-                self.move(self.best_ai_move(), self.turn)
+                act = self.best_ai_act()
+                print(self.turn)
+                self.move(act, self.turn)
 
             result = self.is_winner()
             if result != 0 and result != None:
