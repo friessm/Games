@@ -15,6 +15,7 @@ class TicTacToe:
         self.board = [0 for i in range(9)]
 
     def render_board(self):
+        """ Renders board to stdout. """
         for i in range(0, len(self.board), 3):
             print(self.board[i], self.board[i+1], self.board[i+2])
         print('\n')
@@ -89,7 +90,6 @@ class TicTacToe:
         """ Get human player input. """
         while True:
             try:
-                # TODO: Handle all kinds of bad input
                 act = int(input('Player {} make your move: '.format(self.turn)))
             except ValueError:
                 print('Invalid input. Valid input are integers from 0 to 8.')
