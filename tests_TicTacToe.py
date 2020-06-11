@@ -10,7 +10,6 @@ class TicTacToeTest(unittest.TestCase):
         self.game = TicTacToe.TicTacToe()
 
     def test_next_turn(self):
-
         print('Testing next_turn method ... \n')
 
         # Test if player 1 switches to player 2
@@ -23,25 +22,18 @@ class TicTacToeTest(unittest.TestCase):
 
 
     def test_move(self):      
-        
-        # TODO: How to supress the text to stdout?
         print('Testing move method ... \n')
         
         # Test the happy cases
         for i in range(0,9):
             self.assertTrue(self.game.move(i, self.game.turn))
 
-        # Test that moves stay inside the board
-        for i in range(9, 15):
-            self.assertFalse(self.game.move(i, self.game.turn))
-
         # Test that no move can be overwritten
         self.game.next_turn()
         for i in range(0, 9):
             self.assertFalse(self.game.move(i, self.game.turn))
 
-    def test_is_winner(self):
-        
+    def test_is_winner(self):      
         print('Testing is_winner method ... \n')
         
         # Positive cases
@@ -57,7 +49,6 @@ class TicTacToeTest(unittest.TestCase):
 
         for i in range(len(tlist1)):
             self.game.board = tlist1[i]
-            print(self.game.board)
             self.assertIs(self.game.is_winner(), 1)
 
         # Test diagonals for player 2
@@ -67,7 +58,6 @@ class TicTacToeTest(unittest.TestCase):
 
         for i in range(len(tlist2)):
             self.game.board = tlist2[i]
-            print(self.game.is_winner())
             self.assertIs(self.game.is_winner(), 2)
 
         # Negative cases for player 1
@@ -92,6 +82,15 @@ class TicTacToeTest(unittest.TestCase):
         for i in range(len(tlist4)):
             self.game.board = tlist4[i]
             self.assertIs(self.game.is_winner(), 0)
+
+    def test_valid_moves(self):
+        print('Testing valid_moves method ...')
+
+        # Positive test case
+        tlist1 = [1, 1, 0, 2, 2, 1, 2, 0, 0]
+        self.game.board = tlist1
+        self.assertEqual(self.game.valid_moves(), [2, 7, 8])
+
 
 
 if __name__ == '__main__':
